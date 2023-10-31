@@ -1,0 +1,78 @@
+[
+  {
+    "model": "main.course",
+    "pk": 1,
+    "fields": {
+      "name": "first course",
+      "preview": "course_previews/Без_имени.jpeg",
+      "description": "123"
+    }
+  },
+  {
+    "model": "main.course",
+    "pk": 2,
+    "fields": {
+      "name": "second course",
+      "preview": "course_previews/Без_имени_99qPdTh.jpeg",
+      "description": "1234"
+    }
+  },
+  {
+    "model": "main.lesson",
+    "pk": 2,
+    "fields": {
+      "name": "first lesson",
+      "description": "123",
+      "preview": "lesson_previews/Без_имени_fGNhTkJ.jpeg",
+      "video_link": "http://123.com",
+      "course": 1
+    }
+  },
+  {
+    "model": "main.lesson",
+    "pk": 3,
+    "fields": {
+      "name": "second lesson",
+      "description": "123",
+      "preview": "lesson_previews/Без_имени_Eftvk75.jpeg",
+      "video_link": "http://12312.com",
+      "course": 2
+    }
+  },
+  {
+    "model": "main.payment",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "payment_date": "2023-10-31T15:29:39.446Z",
+      "course": 1,
+      "lesson": null,
+      "payment_amount": 1,
+      "payment_method": "Transfer"
+    }
+  },
+  {
+    "model": "main.payment",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "payment_date": "2023-10-31T15:29:59.038Z",
+      "course": 2,
+      "lesson": null,
+      "payment_amount": 1,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "main.payment",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "payment_date": "2023-10-31T15:30:11.153Z",
+      "course": null,
+      "lesson": 2,
+      "payment_amount": 1,
+      "payment_method": "Transfer"
+    }
+  }
+]
