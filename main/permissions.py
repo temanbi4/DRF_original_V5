@@ -21,3 +21,13 @@ class IsOwner(BasePermission):
             return True
 
         return False
+
+
+class IsSubscriber(BasePermission):
+    massage = 'Вы не являетесь подписчиком!'
+
+    def has_object_permission(self, request, view, obj):
+        if request.user == obj.user:
+            return True
+
+        return False

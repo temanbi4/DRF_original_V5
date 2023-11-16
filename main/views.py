@@ -1,14 +1,17 @@
-from rest_framework import viewsets, generics
-from main.models import Course, Lesson, Payment
-from main.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
-from main.permissions import IsModerator, IsOwner
+from rest_framework import viewsets, generics
+
+from main.models import Course, Lesson, Payment, Subscription
+from main.paginators import CoursePaginator, LessonPaginator
+from main.permissions import IsModerator, IsOwner, IsSubscriber
+from main.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = CoursePaginator
 
     def get_permissions(self):
         if self.action == 'update' or self.action == 'partial_update' or self.action == 'retrieve':
@@ -35,6 +38,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    pagination_class = LessonPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -47,9 +51,11 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     permission_classes = [IsOwner | IsModerator]
 
+
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     permission_classes = [IsOwner]
+
 
 class PaymentListAPIView(generics.ListAPIView):
     serializer_class = PaymentSerializer
@@ -57,3 +63,17 @@ class PaymentListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ('payment_date',)
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializer
+
+    def perform_create(self, serializer, **kwargs):
+        new_subscription = serializer.save()
+        new_subscription.user = self.request.user
+        new_subscription.save()
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    queryset = Subscription.objects.all()
+    permission_classes = [IsSubscriber]

@@ -32,6 +32,7 @@ class Lesson(models.Model):
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
 
+
 class Payment(models.Model):
 
     PAYMENT_CHOICES = [
@@ -53,3 +54,17 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь',
+                             **NULLABLE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
+    is_active = models.BooleanField(default=True, verbose_name='активна')
+
+    def __str__(self):
+        return f'Подписка на курс {self.course} для пользователя {self.user}'
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
