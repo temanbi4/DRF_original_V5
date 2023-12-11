@@ -65,6 +65,31 @@ class PaymentListAPIView(generics.ListAPIView):
     ordering_fields = ('payment_date',)
 
 
+class PaymentLessonCreateAPIView(generics.CreateAPIView):
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer, **kwargs):
+
+        new_payment = serializer.save()
+        new_payment.user = self.request.user
+        new_payment.lesson = Lesson.objects.get(id=self.kwargs['pk'])
+        new_payment.save()
+        new_payment.payment_amount = Lesson.objects.get(id=self.kwargs['pk']).price
+        new_payment.save()
+
+
+class PaymentCourseCreateAPIView(generics.CreateAPIView):
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer, **kwargs):
+
+        new_payment = serializer.save()
+        new_payment.user = self.request.user
+        new_payment.course = Course.objects.get(id=self.kwargs['pk'])
+        new_payment.payment_amount = Course.objects.get(id=self.kwargs['pk']).price
+        new_payment.save()
+
+
 class SubscriptionCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
 
