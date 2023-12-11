@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,26 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'fuckup@oscarbot.ru'
+EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
+EMAIL_USE_SSL = True
+
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = 'redis://redis:6379'
+# URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# # Часовой пояс для работы Celery
+# CELERY_TIMEZONE = "Australia/Tasmania"
+# # Флаг отслеживания выполнения задач
+# CELERY_TASK_TRACK_STARTED = True
+# # Максимальное время на выполнение задачи
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+
+STRIPE_SECRET_KEY = 'sk_test_51OMFNXAGDkwWBxVBjeuqQax5dJeisi40pyLwCwZEciEiKf3r4WSFDnmjlnvcxrvpOgwGwvT9Yzv1xm28iHocWmRF00tmJ5kKg9'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

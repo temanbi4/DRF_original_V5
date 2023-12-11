@@ -6,6 +6,7 @@ from main.models import Course, Lesson, Payment, Subscription
 from main.paginators import CoursePaginator, LessonPaginator
 from main.permissions import IsModerator, IsOwner, IsSubscriber
 from main.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
+from main.tasks import send_update_email
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -29,10 +30,25 @@ class CourseViewSet(viewsets.ModelViewSet):
         course.owner = self.request.user
         course.save()
 
+    def perform_update(self, serializer):
+        updated_course = serializer.save()  # Сохраняем курс
+        send_update_email.delay(updated_course.id)  # Вызываем функцию для отправки письма на почту
+
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [~IsModerator]
+
+    def perform_create(self, serializer):
+        new_lesson = serializer.save()
+
+        new_lesson.owner = self.request.user  # Присваиваем атрибуту значение авторизованного пользователя
+        new_lesson.save()  # Сохраняем урок в базе данных
+
+        # Проверка привязки урока к курсу. Если урок есть в курсе, то отправляем письмо на почту что курс обновлен
+        course = Course.objects.get(id=new_lesson.course.pk)
+        if course:
+            send_update_email.delay(course.id)
 
 
 class LessonListAPIView(generics.ListAPIView):
