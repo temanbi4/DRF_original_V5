@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-73!dxfyp7d*ig9smbpvsaomb5ot8u3+xnrmh0m_nt9jx*@b6kc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -147,7 +147,7 @@ EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
 EMAIL_USE_SSL = True
 
 # URL-адрес брокера сообщений
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379'
 # URL-адрес брокера результатов, также Redis
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 # # Часовой пояс для работы Celery
@@ -156,6 +156,8 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 # CELERY_TASK_TRACK_STARTED = True
 # # Максимальное время на выполнение задачи
 # CELERY_TASK_TIME_LIMIT = 30 * 60
+
+ALLOWED_HOSTS = ["*"]
 
 STRIPE_SECRET_KEY = 'sk_test_51OMFNXAGDkwWBxVBjeuqQax5dJeisi40pyLwCwZEciEiKf3r4WSFDnmjlnvcxrvpOgwGwvT9Yzv1xm28iHocWmRF00tmJ5kKg9'
 
